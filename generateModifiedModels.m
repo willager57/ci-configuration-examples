@@ -35,13 +35,13 @@ for row = rows
                 diffData(end).Left = extractedFileName;
                 diffData(end).Right = "emptyModel.slx";
                 diffData(end).Summary = splitRow(2);
-            elseif changeType == "R085"
+            elseif contains(changeType, "R")
                 extractedFileName = copyAncestorModel(splitRow(2), ancestorRevision);
                 modelsToCleanup(end+1) = extractedFileName;
                 diffData(end).Left = extractedFileName;
                 diffData(end).Right = splitRow(3);
                 diffData(end).Summary = splitRow(3);
-            else
+            elseif changeType == "M"
                 extractedFileName = copyAncestorModel(splitRow(2), ancestorRevision);
                 modelsToCleanup(end+1) = extractedFileName;
                 diffData(end).Left = extractedFileName;
