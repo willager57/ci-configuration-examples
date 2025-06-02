@@ -24,6 +24,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
       
+      # Install Git for Git operations
+       - name: Install Git
+        run: sudo apt-get update && sudo apt-get install -y git
+
       # Sets up MATLAB on a GitHub-hosted runner
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v2
