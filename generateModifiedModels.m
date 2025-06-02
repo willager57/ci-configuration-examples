@@ -6,6 +6,10 @@ ancestorRevision = replace(ancestorRevision, newline, "");
 
 [~, diff] = system(sprintf('git diff %s %s --name-status', ancestorRevision, currentRevision));
 
+disp(pwd);
+disp("Diff result:")
+disp(diff);
+
 function extractedFileName = copyAncestorModel(model, ancestorRevision)
 [path, filename, ext] = fileparts(model);
 shortenedCommitID = extractBetween(ancestorRevision, 1, 8);
