@@ -6,11 +6,5 @@ load("diffData.mat");
     'ListString', [diffData.Summary]);
 
 for model = diffData(selectedIdx)
-    if model.ChangeType == "A"
-        visdiff(model.Left, model.Right);
-    elseif model.ChangeType == "D"
-        % Need to implement
-    else
-        % Need to implement
-    end
+    visdiff(model.Left, model.Right);
 end
