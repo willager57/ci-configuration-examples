@@ -1,11 +1,11 @@
 % Generate diff between currrent and ancestor commit
 [~, currentRevision] = system('git rev-parse HEAD');
-[~, ancestorRevision] = system('git rev-parse HEAD~');
+[~, ancestorRevision] = system('git rev-parse "HEAD^"');
 currentRevision = replace(currentRevision, newline, "");
 ancestorRevision = replace(ancestorRevision, newline, "");
 
-fprintf("Current revision: %s", currentRevision);
-fprintf("Ancestor revision: %s", ancestorRevision);
+fprintf("Current revision: %s %s", currentRevision, newline);
+fprintf("Ancestor revision: %s %s", ancestorRevision, newline);
 
 [~, diff] = system(sprintf('git diff %s %s --name-status', ancestorRevision, currentRevision));
 
