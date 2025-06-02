@@ -20,7 +20,7 @@ rows = string(strsplit(diff, "\n"));
 diffData = struct([]);
 for row = rows
     splitRow = strsplit(row, char(9));
-    if splitRow ~= ""
+    if splitRow ~= "" && length(splitRow) >= 2
         [~, ~, ext] = fileparts(splitRow(2));
         if ext == ".slx" || ext == ".mdl"
             changeType = splitRow(1);
