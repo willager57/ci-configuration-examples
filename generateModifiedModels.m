@@ -4,6 +4,9 @@
 currentRevision = replace(currentRevision, newline, "");
 ancestorRevision = replace(ancestorRevision, newline, "");
 
+fprintf("Current revision: %s", currentRevision);
+fprintf("Ancestor revision: %s", ancestorRevision);
+
 [~, diff] = system(sprintf('git diff %s %s --name-status', ancestorRevision, currentRevision));
 
 disp(pwd);
