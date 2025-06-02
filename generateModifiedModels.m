@@ -16,11 +16,11 @@ end
 modelsToCleanup = strings(0);
 
 % Summarize diff results
-rows = string(strsplit(diff, "\n"));
+rows = string(strsplit(diff, newline));
 diffData = struct([]);
 for row = rows
     splitRow = strsplit(row, char(9));
-    if splitRow ~= "" && length(splitRow) >= 2
+    if length(splitRow) >= 2
         [~, ~, ext] = fileparts(splitRow(2));
         if ext == ".slx" || ext == ".mdl"
             changeType = splitRow(1);
@@ -53,6 +53,12 @@ for row = rows
 end
 
 % Create ZIP file containing modified models and list of changes
+if isempty(diffData)
+    warning("No diffed models found - zip file not generated!");
+    clear
+    return;
+end
+
 save("diffData", "diffData");
 cleanupMat = onCleanup(@() delete("diffData.mat"));
 
