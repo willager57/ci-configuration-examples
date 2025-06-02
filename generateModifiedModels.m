@@ -53,12 +53,6 @@ for row = rows
 end
 
 % Create ZIP file containing modified models and list of changes
-modelName = 'emptyModel';
-new_system(modelName);
-save_system(modelName);
-close_system(modelName);
-cleanupModel = onCleanup(@() delete("emptyModel.slx"));
-
 save("diffData", "diffData");
 cleanupMat = onCleanup(@() delete("diffData.mat"));
 
