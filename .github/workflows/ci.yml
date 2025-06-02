@@ -42,7 +42,7 @@ jobs:
 
       # Uploads the generated zip file to GitHub
       - name: Upload generated file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: model-diffs
           path: modifiedModels.zip
