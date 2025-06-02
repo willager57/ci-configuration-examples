@@ -6,6 +6,13 @@ ancestorRevision = replace(ancestorRevision, newline, "");
 
 [~, diff] = system(sprintf('git diff %s %s --name-status', ancestorRevision, currentRevision));
 
+function extractedFileName = copyAncestorModel(model, ancestorRevision)
+[path, filename, ext] = fileparts(model);
+shortenedCommitID = extractBetween(ancestorRevision, 1, 8);
+extractedFileName = fullfile(path, filename + "_" + shortenedCommitID + ext);
+system(sprintf('git show %s:%s > %s', ancestorRevision, model, extractedFileName));
+end
+
 modelsToCleanup = strings(0);
 
 % Summarize diff results
@@ -23,24 +30,20 @@ for row = rows
                 diffData(end).Right = splitRow(2);
                 diffData(end).Summary = splitRow(2);
             elseif changeType == "D"
-                % Need to implement
-            elseif changeType == "R085"
-                [path, filename, ext] = fileparts(splitRow(2));
-                shortenedCommitID = extractBetween(ancestorRevision, 1, 8);
-                extractedFileName = fullfile(path, filename + "_" + shortenedCommitID + ext);
-                system(sprintf('git show %s:%s > %s', ancestorRevision, splitRow(2), extractedFileName));
+                extractedFileName = copyAncestorModel(splitRow(2), ancestorRevision);
                 modelsToCleanup(end+1) = extractedFileName;
-
+                diffData(end).Left = extractedFileName;
+                diffData(end).Right = "emptyModel.slx";
+                diffData(end).Summary = splitRow(2);
+            elseif changeType == "R085"
+                extractedFileName = copyAncestorModel(splitRow(2), ancestorRevision);
+                modelsToCleanup(end+1) = extractedFileName;
                 diffData(end).Left = extractedFileName;
                 diffData(end).Right = splitRow(3);
                 diffData(end).Summary = splitRow(3);
             else
-                [path, filename, ext] = fileparts(splitRow(2));
-                shortenedCommitID = extractBetween(ancestorRevision, 1, 8);
-                extractedFileName = fullfile(path, filename + "_" + shortenedCommitID + ext);
-                system(sprintf('git show %s:%s > %s', ancestorRevision, splitRow(2), extractedFileName));
+                extractedFileName = copyAncestorModel(splitRow(2), ancestorRevision);
                 modelsToCleanup(end+1) = extractedFileName;
-
                 diffData(end).Left = extractedFileName;
                 diffData(end).Right = splitRow(2);
                 diffData(end).Summary = splitRow(2);
