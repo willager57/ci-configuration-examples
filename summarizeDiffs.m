@@ -3,14 +3,14 @@ load("diffData.mat");
 [selectedIdx, ok] = listdlg( ...
     'PromptString', 'Choose which models to generate diffs for', ...
     'SelectionMode', 'multiple', ...
-    'ListString', [diffData.FileName]);
+    'ListString', [diffData.Summary]);
 
 for model = diffData(selectedIdx)
     if model.ChangeType == "A"
         visdiff(model.Left, model.Right);
     elseif model.ChangeType == "D"
-        % This doesn't work either - oopsie!
+        % Need to implement
     else
-        % Don't know how to handle this yet!
+        % Need to implement
     end
 end

@@ -19,6 +19,7 @@ for row = rows
             if changeType == "A"
                 diffData(end).Left = "emptyModel.slx";
                 diffData(end).Right = splitRow(2);
+                diffData(end).Summary = splitRow(2);
             elseif changeType == "D"
                 % Need to implement
             else
@@ -38,7 +39,7 @@ cleanupModel = onCleanup(@() delete("emptyModel.slx"));
 save("diffData", "diffData");
 cleanupMat = onCleanup(@() delete("diffData.mat"));
 
-filesToZip = [[diffData.Left], [diffData.Right], "diffData.mat", "summarizeDiffs.m"];
+filesToZip = [[diffData.Left], [diffData.Right], "diffData.mat", "summarizeDiffs.m", "showDiffs.bat"];
 filesToZip = unique(filesToZip, 'stable');
 zip('modifiedModels.zip', filesToZip);
 
