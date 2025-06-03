@@ -7,7 +7,9 @@ ancestorRevision = replace(ancestorRevision, newline, "");
 fprintf("Current revision: %s %s", currentRevision, newline);
 fprintf("Ancestor revision: %s %s", ancestorRevision, newline);
 
-[~, diff] = system(sprintf('git diff %s %s --name-status', ancestorRevision, currentRevision));
+system(sprintf('git diff %s %s --name-status > diff.txt', ancestorRevision, currentRevision));
+diff = fileread('diff.txt');
+delete('diff.txt');
 
 disp(pwd);
 disp("Diff result:")
