@@ -59,6 +59,8 @@ for row = rows
     end
 end
 
+disp("diffData generation finished");
+
 % Create ZIP file containing modified models and list of changes
 if isempty(diffData)
     warning("No diffed models found - zip file not generated!");
@@ -66,13 +68,17 @@ if isempty(diffData)
     return;
 end
 
+disp("Saving diff data");
 save("diffData", "diffData");
 cleanupMat = onCleanup(@() delete("diffData.mat"));
 
 filesToZip = [[diffData.Left], [diffData.Right], "diffData.mat", "summarizeDiffs.m", "showDiffs.bat"];
 filesToZip = unique(filesToZip, 'stable');
+disp("Zipping modified files");
 zip('modifiedModels.zip', filesToZip);
 
 % Cleanup
+disp("Cleaning up models");
 arrayfun(@(model) delete(model), modelsToCleanup)
+disp("Clearing workspace");
 clear
