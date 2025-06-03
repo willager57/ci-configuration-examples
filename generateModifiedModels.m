@@ -63,7 +63,7 @@ end
 
 disp("diffData generation finished");
 
-% Create ZIP file containing modified models and list of changes
+% Create folder containing modified models and list of changes
 if isempty(diffData)
     warning("No diffed models found - zip file not generated!");
     clear
@@ -74,10 +74,22 @@ disp("Saving diff data");
 save("diffData", "diffData");
 cleanupMat = onCleanup(@() delete("diffData.mat"));
 
-filesToZip = [[diffData.Left], [diffData.Right], "diffData.mat", "summarizeDiffs.m", "showDiffs.bat"];
-filesToZip = unique(filesToZip, 'stable');
-disp("Zipping modified files");
-zip('modifiedModels.zip', filesToZip);
+outputFolderName = 'model-diffs';
+
+if exist(outputFolderName, 'dir'), rmdir(outputFolderName, 's'); end
+mkdir(outputFolderName);
+
+filesToOutput = [[diffData.Left], [diffData.Right], "diffData.mat", "summarizeDiffs.m", "showDiffs.bat"];
+filesToOutput = unique(filesToOutput, 'stable');
+disp("Copying modified files");
+
+function copyOutputFile(file, outputFolderName)
+[path] = fileparts(file);
+outputSubFolder = fullfile(outputFolderName, path);
+if ~exist(outputSubFolder, 'dir'), mkdir(outputSubFolder); end
+copyfile(file, fullfile(outputFolderName, file));
+end
+arrayfun(@(file) copyOutputFile(file, outputFolderName), filesToOutput);
 
 % Cleanup
 disp("Cleaning up models");
